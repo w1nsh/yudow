@@ -2,6 +2,8 @@ from pathlib import Path
 
 from src.yummy.parser import YummyParser
 from src.yummy.response_parser import ResponseParser
+
+from src.yummy.episode_data import EpisodeData
 from src.yummy.dubbing_stats import DubbingStats
 
 
@@ -33,6 +35,18 @@ class YuDow:
 			limit=limit,
 		)
 		return self._yrp.get_animes()
+
+
+	def load_anime_data(
+		self,
+		anime_url: str,
+		need_videos: bool,
+	) -> list[EpisodeData]:
+		self._yp.get_anime(
+			anime_url=anime_url,
+			need_videos=need_videos,
+		)
+		return self._yrp.load_anime_data()
 
 
 	def load_dubbings_stats(

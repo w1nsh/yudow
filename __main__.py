@@ -1,22 +1,23 @@
 from pathlib import Path
 
-from src.yummy.parser import YummyParser
-from src.yummy.response_parser import ResponseParser
+from src.app import YuDow
 
 
-ENCODING = "utf-8"
-BASE_RDIR = Path(__file__).parent / "responses"
+BASE_RDIR = Path(__file__).parent / 'responses'
+ENCODING = 'utf-8'
 
-
-yp = YummyParser(
-	encoding=ENCODING,
-	base_rdir=BASE_RDIR,
-)
-yrp = ResponseParser(
-	encoding=ENCODING,
-	base_rdir=BASE_RDIR,
+yudow = YuDow(
+	BASE_RDIR,
+	ENCODING,
 )
 
-yp.search('этот')
-anime_url = yrp.get_anime_url()
-yp.get_anime(anime_url)
+print(yudow.search_anime('этот', 5))
+
+
+# yp.get_anime(anime_url)
+# lad = yrp.load_anime_data()
+# lad_path = Path(__file__).parent / 'tests' / 'lad.txt'
+# lad_path.write_text(
+# 	str(lad),
+# 	encoding=ENCODING,
+# )

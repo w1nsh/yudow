@@ -5,7 +5,7 @@ import json
 
 
 class YummyParser:
-	_BASE_URL = "https://api.yani.tv"
+	_BASE_URL = 'https://api.yani.tv'
 
 	def __init__(
 		self,
@@ -45,11 +45,11 @@ class YummyParser:
 		offset: int = 0,
 		limit: int = 1,
 	) -> None:
-		method = "search"
+		method = 'search'
 		unique_params = {
-			"q": query,
-			"offset": offset,
-			"limit": limit,
+			'q': query,
+			'offset': offset,
+			'limit': limit,
 		}
 		response = self._get_request(
 			url_endpoint=method,
@@ -66,18 +66,18 @@ class YummyParser:
 		anime_url: str,
 		need_videos: bool = True,
 	) -> None:
-		method = "anime"
+		method = 'anime'
 		need_videos = self._to_url_boolean(need_videos)
 		unique_params = {
-			"need_videos": need_videos,
+			'need_videos': need_videos,
 		}
 		response = self._get_request(
-			url_endpoint=f"{method}/{anime_url}",
+			url_endpoint=f'{method}/{anime_url}',
 			unique_params=unique_params,
 		)
 		self.write(
 			response=response,
-			response_file=self._base_rdir / f"{method}.json",
+			response_file=self._base_rdir / f'{method}.json',
 		)
 
 
@@ -85,7 +85,7 @@ class YummyParser:
 		self,
 		value: bool,
 	) -> str:
-		return "true" if value else "false"
+		return 'true' if value else 'false'
 
 
 	def _get_request(

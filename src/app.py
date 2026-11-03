@@ -29,7 +29,7 @@ class YuDow:
 		self,
 		query: str,
 		limit: int = 1,
-	) -> list[tuple[str, str]]:
+	) -> list[tuple[str, int]]:
 		self._yp.search(
 			query=query,
 			limit=limit,
@@ -39,14 +39,14 @@ class YuDow:
 
 	def load_anime_data(
 		self,
-		anime_url: str,
+		anime_id: int,
 		need_videos: bool,
-	) -> list[EpisodeData]:
+	) -> None:
 		self._yp.get_anime(
-			anime_url=anime_url,
+			anime_id=anime_id,
 			need_videos=need_videos,
 		)
-		return self._yrp.load_anime_data()
+		self._anime_data = self._yrp.load_anime_data()
 
 
 	def load_dubbings_stats(

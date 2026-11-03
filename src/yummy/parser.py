@@ -63,16 +63,16 @@ class YummyParser:
 
 	def get_anime(
 		self,
-		anime_url: str,
+		anime_id: int,
 		need_videos: bool = True,
 	) -> None:
 		method = 'anime'
-		need_videos = self._to_url_boolean(need_videos)
+		formated_need_videos = self._to_url_boolean(need_videos)
 		unique_params = {
-			'need_videos': need_videos,
+			'need_videos': formated_need_videos,
 		}
 		response = self._get_request(
-			url_endpoint=f'{method}/{anime_url}',
+			url_endpoint=f'{method}/{anime_id}',
 			unique_params=unique_params,
 		)
 		self.write(

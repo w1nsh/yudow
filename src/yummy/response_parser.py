@@ -20,17 +20,16 @@ class ResponseParser:
 
 	def get_animes(
 		self,
-	) -> list[tuple[str, str]]:
+	) -> list[tuple[str, int]]:
 		animes = []
 		json_data = self._read_json(
 			file=self._base_rdir / 'search.json',
 		)
-		json_data['response'][0]['anime_url']
 		for anime in json_data['response']:
 			animes.append(
 				(
 					anime['title'],
-					anime['anime_url'],
+					anime['anime_id'],
 				)
 			)
 		return animes

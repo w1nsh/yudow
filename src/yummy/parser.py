@@ -42,8 +42,8 @@ class YummyParser:
 	def search(
 		self,
 		query: str,
+		limit: int,
 		offset: int = 0,
-		limit: int = 1,
 	) -> None:
 		method = 'search'
 		unique_params = {
@@ -53,7 +53,7 @@ class YummyParser:
 		}
 		response = self._get_request(
 			url_endpoint=method,
-			unique_params=unique_params
+			params=unique_params
 		)
 		self.write(
 			response=response,
@@ -64,7 +64,7 @@ class YummyParser:
 	def get_anime(
 		self,
 		anime_id: int,
-		need_videos: bool = True,
+		need_videos: bool,
 	) -> None:
 		method = 'anime'
 		formated_need_videos = self._to_url_boolean(need_videos)
@@ -73,7 +73,7 @@ class YummyParser:
 		}
 		response = self._get_request(
 			url_endpoint=f'{method}/{anime_id}',
-			unique_params=unique_params,
+			params=unique_params,
 		)
 		self.write(
 			response=response,
@@ -91,22 +91,19 @@ class YummyParser:
 	def _get_request(
 		self,
 		url_endpoint: str,
-		unique_params: dict[str, Any] | None = None,
+		params: dict[str, Any] | None = None,
 	) -> dict[str, Any]:
 		"""
 		Sends a GET request to the specified API endpoint with the given parameters.
 
 		Args:
 			url_endpoint (str): The API endpoint to send the request to.
-			unique_params (Optional[dict[str, Any]]): Additional parameters specific to the request. Defaults to None.
+			params (Optional[dict[str, Any]]): Additional parameters specific to the request. Defaults to None.
 
 		Returns:
 			dict[str, Any] | None: The JSON response from the API if the request is successful, None otherwise.
 		"""
 		url = f'{self._BASE_URL}/{url_endpoint}'
-		params = {}
-		if unique_params:
-			params.update(unique_params)
 		response = requests.get(
 			url,
 			params=params,

@@ -1,0 +1,18 @@
+output_dir = "C:/Users/anton/OneDrive/Desktop/YuDow/tests"
+max_retries = 0
+metadata = true
+
+[templates]
+episodes = "ep{episode_number}"
+metadata = "{anime_title}"
+
+[play]
+players = [
+	"AKSOR",
+	"ALLOHA",
+	"KODIK",
+	"CVH",
+]
+dubs = [
+	"Озвучка AniLibria",
+]

@@ -40,7 +40,7 @@ class YuDow:
 	def load_anime_data(
 		self,
 		anime_id: int,
-		need_videos: bool,
+		need_videos: bool = True,
 	) -> None:
 		self._yp.get_anime(
 			anime_id=anime_id,

@@ -101,7 +101,7 @@ class ResponseParser:
 		season = json_data['response']['season']
 		anime_status = json_data['response']['anime_status']['title']
 		duration = json_data['response']['duration']
-		type_name = json_data['response']['type_name']
+		type_name = json_data['response']['type']['name']
 		views = json_data['response']['views']
 		year = json_data['response']['year']
 		min_age = json_data['response']['min_age']['title_long']

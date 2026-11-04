@@ -47,7 +47,7 @@ class YuDow:
 			anime_id=anime_id,
 		)
 		if metadata:
-			self._anime_metadata = self._load_anime_metadata()
+			self._load_anime_metadata()
 		self._load_anime_data()
 
 
@@ -60,16 +60,18 @@ class YuDow:
 
 	def _load_anime_metadata(
 		self,
-	) -> AnimeMetadata:
+	) -> None:
 		# call after get anime (yp)
-		return self._yrp.load_anime_metadata()
+		self._anime_metadata = self._yrp.load_anime_metadata()
 
 
 	def load_dubbings_stats(
 		self,
+		dubbing_stats: list[DubbingStats] | None = None,
 	) -> list[DubbingStats]:
 		# call after load_anime_data (yudow)
-		dubbing_stats = []
+		if dubbing_stats is None:
+			dubbing_stats = []
 		for ep_data in self._anime_data:
 			for dub_data in ep_data.dubbings:
 				views = 0

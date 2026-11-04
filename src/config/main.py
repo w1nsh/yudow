@@ -1,9 +1,10 @@
+from dataclasses import dataclass
 from pathlib import Path
 
 from src.config.templates import TemplatesConfig
 from src.config.play import PlayConfig
 
-
+@dataclass
 class Config:
 	output_dir: Path
 	max_retries: int

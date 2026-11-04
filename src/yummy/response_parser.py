@@ -5,7 +5,7 @@ import json
 from src.yummy.episode_data import EpisodeData
 from src.yummy.dubbing_data import DubbingData
 from src.yummy.player_data import PlayerData
-# from src.yummy.anime_metadata import AnimeMetadata
+from src.yummy.anime_metadata import AnimeMetadata
 
 
 class ResponseParser:
@@ -89,12 +89,42 @@ class ResponseParser:
 		return anime_data
 
 
-	# def load_anime_metadata(
-	# 	self,
-	# ) -> AnimeMetadata:
-	# 	json_data = self._read_json(
-	# 		file=self._base_rdir / 'anime.json',
-	# 	)
+	def load_anime_metadata(
+		self,
+	) -> AnimeMetadata:
+		json_data = self._read_json(
+			file=self._base_rdir / 'anime.json',
+		)
+		title = json_data['response']['title']
+		description = json_data['response']['description']
+		anime_id = json_data['response']['anime_id']
+		season = json_data['response']['season']
+		anime_status = json_data['response']['anime_status']['title']
+		duration = json_data['response']['duration']
+		type_name = json_data['response']['type_name']
+		views = json_data['response']['views']
+		year = json_data['response']['year']
+		min_age = json_data['response']['min_age']['title_long']
+		poster_url = json_data['response']['poster']['fullsize']
+
+		genres = []
+		for genre in json_data['response']['genres']:
+			genres.append(genre['title'])
+
+		return AnimeMetadata(
+			title=title,
+			description=description,
+			anime_id=anime_id,
+			season=season,
+			anime_status=anime_status,
+			duration=duration,
+			genres=genres,
+			type_name=type_name,
+			views=views,
+			year=year,
+			min_age=min_age,
+			poster_url=poster_url
+		)
 
 
 	def _read_json(

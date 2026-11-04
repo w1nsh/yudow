@@ -64,7 +64,7 @@ class YummyParser:
 	def get_anime(
 		self,
 		anime_id: int,
-		need_videos: bool,
+		need_videos: bool = True,
 	) -> None:
 		method = 'anime'
 		formated_need_videos = self._to_url_boolean(need_videos)
@@ -85,7 +85,7 @@ class YummyParser:
 		self,
 		value: bool,
 	) -> str:
-		return 'true' if value else 'false'
+		return 'true' if value else 'false' # точно надо или нет?
 
 
 	def _get_request(

@@ -98,12 +98,12 @@ class ResponseParser:
 		title = json_data['response']['title']
 		description = json_data['response']['description']
 		anime_id = json_data['response']['anime_id']
-		season = json_data['response']['season']
 		anime_status = json_data['response']['anime_status']['title']
 		duration = json_data['response']['duration']
 		type_name = json_data['response']['type']['name']
 		views = json_data['response']['views']
 		year = json_data['response']['year']
+		season = json_data['response']['season']
 		min_age = json_data['response']['min_age']['title_long']
 		poster_url = json_data['response']['poster']['fullsize']
 
@@ -115,13 +115,13 @@ class ResponseParser:
 			title=title,
 			description=description,
 			anime_id=anime_id,
-			season=season,
 			anime_status=anime_status,
 			duration=duration,
 			genres=genres,
 			type_name=type_name,
 			views=views,
 			year=year,
+			season=season,
 			min_age=min_age,
 			poster_url=poster_url
 		)

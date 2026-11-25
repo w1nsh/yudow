@@ -11,7 +11,7 @@ yudow = YuDow(
 	ENCODING,
 )
 
-yudow.load_anime(357, False)
-lds =  yudow.load_dubbings_stats()
-lds_path = Path(__file__).parent / 'tests' / 'lds3333.txt'
+yudow.load_anime(357, True)
+lds =  yudow._anime_metadata
+lds_path = Path(__file__).parent / 'tests' / 'am.txt'
 lds_path.write_text(str(lds), encoding=ENCODING)

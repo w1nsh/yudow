@@ -3,6 +3,8 @@ from typing import Any
 import requests
 import json
 
+from src.yummy.response.filenames import ReponseFilenames
+
 
 class YummyParser:
 	_BASE_URL = 'https://api.yani.tv'
@@ -41,6 +43,7 @@ class YummyParser:
 	
 	def search(
 		self,
+		filename: ReponseFilenames,
 		query: str,
 		limit: int,
 		offset: int = 0,
@@ -57,12 +60,13 @@ class YummyParser:
 		)
 		self.write(
 			response=response,
-			response_file=self._base_rdir / f"{method}.json",
+			response_file=self._base_rdir / f"{filename.value}.json",
 		)
 
 
 	def get_anime(
 		self,
+		filename: ReponseFilenames,
 		anime_id: int,
 		need_videos: bool = True,
 	) -> None:
@@ -77,7 +81,7 @@ class YummyParser:
 		)
 		self.write(
 			response=response,
-			response_file=self._base_rdir / f'{method}.json',
+			response_file=self._base_rdir / f'{filename.value}.json',
 		)
 
 

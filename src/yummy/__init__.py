@@ -1,5 +1,4 @@
 from .parser import YummyParser
-from .response_parser import ResponseParser
 
 from .episode_data import EpisodeData
 from .dubbing_data import DubbingData

@@ -1,7 +1,9 @@
 from pathlib import Path
 
 from src.yummy.parser import YummyParser
-from src.yummy.response_parser import ResponseParser
+from src.yummy.response.parser import ResponseParser
+from src.yummy.response.filenames import ReponseFilenames
+from src.yummy.response.lifetimer import ResponseLifetimer
 
 from src.yummy.anime_metadata import AnimeMetadata
 
@@ -16,6 +18,9 @@ class YuDow:
 	) -> None:
 		self._base_rdir = base_rdir
 		self._encoding = encoding
+		self._rl = ResponseLifetimer(
+			base_rdir=self._base_rdir
+		)
 		self._yp = YummyParser(
 			encoding=self._encoding,
 			base_rdir=self._base_rdir,
@@ -32,6 +37,7 @@ class YuDow:
 		limit: int = 1,
 	) -> list[tuple[str, int]]:
 		self._yp.search(
+			filename=ReponseFilenames.SEARCH,
 			query=query,
 			limit=limit,
 		)
@@ -43,35 +49,45 @@ class YuDow:
 		anime_id: int,
 		metadata: bool,
 	) -> None:
-		self._yp.get_anime(
-			anime_id=anime_id,
-		)
+		method = ReponseFilenames.GET_ANIME
+		if self._rl.timestamp_is_exists(
+			filename=method,
+		):
+			timestamp = self._rl.load(
+				filename=method,
+			)
+			if not self._rl.timestamp_is_valid(
+				timestamp=timestamp,
+			):
+				self._yp.get_anime(
+					filename=method,
+					anime_id=anime_id,
+				)
+				self._rl.write(
+					timestamp=self._rl.timestamp(
+						filename=method,
+					),
+				)
+		else:
+			self._yp.get_anime(
+				filename=method,
+				anime_id=anime_id,
+			)
+			self._rl.write(
+				timestamp=self._rl.timestamp(
+					filename=method,
+				),
+			)
 		if metadata:
-			self._load_anime_metadata()
-		self._load_anime_data()
-
-
-	def _load_anime_data(
-		self,
-	) -> None:
-		# call after get anime (yp)
+			self._anime_metadata = self._yrp.load_anime_metadata()
 		self._anime_data = self._yrp.load_anime_data()
-
-
-	def _load_anime_metadata(
-		self,
-	) -> None:
-		# call after get anime (yp)
-		self._anime_metadata = self._yrp.load_anime_metadata()
 
 
 	def load_dubbings_stats(
 		self,
-		dubbing_stats: list[DubbingStats] | None = None,
 	) -> list[DubbingStats]:
 		# call after load_anime_data (yudow)
-		if dubbing_stats is None:
-			dubbing_stats = []
+		dubbing_stats = []
 		for ep_data in self._anime_data:
 			for dub_data in ep_data.dubbings:
 				views = 0

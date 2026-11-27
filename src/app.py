@@ -1,4 +1,5 @@
 from pathlib import Path
+import time
 
 from src.config.parser import ConfigParser
 from src.config.writer import ConfigWriter
@@ -78,20 +79,34 @@ class YuDow:
 			if not self._rl.timestamp_is_valid(
 				timestamp=timestamp,
 			):
-				self._yp.get_anime(
-					filename=method,
-					anime_id=anime_id,
-				)
+				for _ in range(self._config.max_retries):
+					try:
+						self._yp.get_anime(
+							filename=method,
+							anime_id=anime_id,
+						)
+					except Exception:
+						pass
+					else:
+						break
+					time.sleep(1.5)
 				self._rl.write(
 					timestamp=self._rl.timestamp(
 						filename=method,
 					),
 				)
 		else:
-			self._yp.get_anime(
-				filename=method,
-				anime_id=anime_id,
-			)
+			for _ in range(self._config.max_retries):
+				try:
+					self._yp.get_anime(
+						filename=method,
+						anime_id=anime_id,
+					)
+				except Exception:
+					pass
+				else:
+					break
+				time.sleep(1.5)
 			self._rl.write(
 				timestamp=self._rl.timestamp(
 					filename=method,

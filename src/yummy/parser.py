@@ -11,8 +11,8 @@ class YummyParser:
 
 	def __init__(
 		self,
-		encoding: str,
 		rdir: Path,
+		encoding: str = 'utf-8',
 	) -> None:
 		self._encoding = encoding
 		self._rdir = rdir
@@ -89,7 +89,7 @@ class YummyParser:
 		self,
 		value: bool,
 	) -> str:
-		return 'true' if value else 'false' # точно надо или нет?
+		return 'true' if value else 'false'
 
 
 	def _get_request(
@@ -112,6 +112,6 @@ class YummyParser:
 			url,
 			params=params,
 		)
-		response.raise_for_status() # try + endpoint error handling
+		response.raise_for_status()
 		json_response = response.json()
 		return json_response

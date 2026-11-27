@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from src.config.parser import ConfigParser
+from src.config.writer import ConfigWriter
 
 from src.yummy.parser import YummyParser
 from src.yummy.response.parser import ResponseParser
@@ -29,6 +30,11 @@ class YuDow:
 		self._cp = ConfigParser(
 			cdir=self._cdir,
 			odir=self._odir,
+			encoding=self._encoding,
+		)
+		self._cw = ConfigWriter(
+			cdir=self._cdir,
+			encoding=self._encoding,
 		)
 		self._config = self._cp.config(self.CONFIG_FILENAME)
 

@@ -1,5 +1,5 @@
-output_dir = "C:/Users/anton/OneDrive/Desktop/YuDow/tests"
-max_retries = 0
+output_dir = "C:/Users/anton/OneDrive/Desktop/YuDow/downloaded"
+max_retries = 3
 metadata = true
 
 [templates]

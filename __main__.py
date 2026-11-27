@@ -11,6 +11,6 @@ yudow = YuDow(
 )
 
 yudow.load_anime(357)
-lds =  yudow._anime_metadata
-lds_path = Path(__file__).parent / 'tests' / 'am.txt'
+lds =  yudow._config
+lds_path = Path(__file__).parent / 'tests' / 'del_url_to_boolean.txt'
 lds_path.write_text(str(lds), encoding=ENCODING)

@@ -5,7 +5,9 @@ import json
 from src.yummy.episode_data import EpisodeData
 from src.yummy.dubbing_data import DubbingData
 from src.yummy.player_data import PlayerData
+
 from src.yummy.anime_metadata import AnimeMetadata
+from src.yummy.season_metadata import SeasonMetadata
 
 
 class ResponseParser:
@@ -94,36 +96,57 @@ class ResponseParser:
 	) -> AnimeMetadata:
 		json_data = self._read_json(
 			file=self._rdir / 'anime.json',
-		)
-		title = json_data['response']['title']
-		description = json_data['response']['description']
-		anime_id = json_data['response']['anime_id']
-		anime_status = json_data['response']['anime_status']['title']
-		duration = json_data['response']['duration']
-		type_name = json_data['response']['type']['name']
-		views = json_data['response']['views']
-		year = json_data['response']['year']
-		season = json_data['response']['season']
-		min_age = json_data['response']['min_age']['title_long']
-		poster_url = json_data['response']['poster']['fullsize']
+		)['response']
+		title = json_data['title']
+		anime_id = json_data['anime_id']
+		original = json_data['original']
+		other_titles = json_data['other_titles']
+		description = json_data['description']
+		anime_status = json_data['anime_status']['title']
+		duration = json_data['duration']
+		type = json_data['type']['name']
+		views = json_data['views']
+		year = json_data['year']
+		year_season = json_data['season']
+		min_age = json_data['min_age']['title_long']
+		poster_url = json_data['poster']['fullsize']
 
 		genres = []
-		for genre in json_data['response']['genres']:
+		for genre in json_data['genres']:
 			genres.append(genre['title'])
+
+		anime_seasons = []
+		for anime_season in json_data['viewing_order']:
+			anime_seasons.append(
+				SeasonMetadata(
+					title=anime_season['title'],
+					anime_season=anime_season['data']['index'],
+					anime_id=anime_season['anime_id'],
+					description=anime_season['description'],
+					type=anime_season['type']['name'],
+					info=anime_season['data']['text'],
+					year=anime_season['year'],
+					anime_status=anime_season['anime_status']['title'],
+					poster_url=anime_season['poster']['fullsize'],
+				)
+			)
 
 		return AnimeMetadata(
 			title=title,
+			other_titles=other_titles,
+			original=original,
 			description=description,
 			anime_id=anime_id,
 			anime_status=anime_status,
 			duration=duration,
 			genres=genres,
-			type_name=type_name,
+			type=type,
 			views=views,
 			year=year,
-			season=season,
+			year_season=year_season,
 			min_age=min_age,
-			poster_url=poster_url
+			poster_url=poster_url,
+			anime_seasons=anime_seasons,
 		)
 
 

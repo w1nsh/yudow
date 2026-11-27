@@ -10,9 +10,11 @@ class ConfigParser:
 		self,
 		cdir: Path,
 		odir: Path,
+		encoding: str = 'utf-8',
 	) -> None:
 		self._cdir = cdir
 		self._odir = odir
+		self._encoding = encoding
 
 
 	def config(
@@ -20,7 +22,11 @@ class ConfigParser:
 		filename: str,
 	) -> Config:
 		try:
-			config_toml = tomllib.loads((self._cdir / filename).read_text())
+			config_toml = tomllib.loads(
+				(self._cdir / filename).read_text(
+					encoding=self._encoding,
+				)
+			)
 		except Exception:
 			config_toml = dict()
 		

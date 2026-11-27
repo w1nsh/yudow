@@ -1,33 +1,47 @@
 from pathlib import Path
 
+from src.config.parser import ConfigParser
+
 from src.yummy.parser import YummyParser
 from src.yummy.response.parser import ResponseParser
 from src.yummy.response.filenames import ReponseFilenames
 from src.yummy.response.lifetimer import ResponseLifetimer
 
-from src.yummy.anime_metadata import AnimeMetadata
-
 from src.yummy.dubbing_stats import DubbingStats
 
 
 class YuDow:
+	BASE_RDIR_ENDPOINT = 'responses'
+	BASE_CDIR_ENDPOINT = 'config'
+	BASE_ODIR_ENDPOINT = 'downloaded'
+	CONFIG_FILENAME = 'config.toml'
+
 	def __init__(
 		self,
-		base_rdir: Path,
+		base_dir: Path,
 		encoding: str,
 	) -> None:
-		self._base_rdir = base_rdir
+		self._rdir = base_dir / self.BASE_RDIR_ENDPOINT
+		self._cdir = base_dir / self.BASE_CDIR_ENDPOINT
+		self._odir = base_dir / self.BASE_ODIR_ENDPOINT
 		self._encoding = encoding
-		self._rl = ResponseLifetimer(
-			base_rdir=self._base_rdir
+
+		self._cp = ConfigParser(
+			cdir=self._cdir,
+			odir=self._odir,
 		)
+		self._config = self._cp.config(self.CONFIG_FILENAME)
+
 		self._yp = YummyParser(
 			encoding=self._encoding,
-			base_rdir=self._base_rdir,
+			rdir=self._rdir,
 		)
 		self._yrp = ResponseParser(
 			encoding=self._encoding,
-			base_rdir=self._base_rdir,
+			rdir=self._rdir,
+		)
+		self._rl = ResponseLifetimer(
+			rdir=self._rdir,
 		)
 
 
@@ -47,7 +61,6 @@ class YuDow:
 	def load_anime(
 		self,
 		anime_id: int,
-		metadata: bool,
 	) -> None:
 		method = ReponseFilenames.GET_ANIME
 		if self._rl.timestamp_is_exists(
@@ -78,15 +91,19 @@ class YuDow:
 					filename=method,
 				),
 			)
-		if metadata:
+		if self._config.metadata:
 			self._anime_metadata = self._yrp.load_anime_metadata()
 		self._anime_data = self._yrp.load_anime_data()
 
 
 	def load_dubbings_stats(
 		self,
+		anime_id: int | None = None,
 	) -> list[DubbingStats]:
-		# call after load_anime_data (yudow)
+		if anime_id:
+			self.load_anime(
+				anime_id=anime_id,
+			)
 		dubbing_stats = []
 		for ep_data in self._anime_data:
 			for dub_data in ep_data.dubbings:

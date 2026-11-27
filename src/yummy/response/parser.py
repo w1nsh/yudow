@@ -12,10 +12,10 @@ class ResponseParser:
 	def __init__(
 		self,
 		encoding: str,
-		base_rdir: Path,
+		rdir: Path,
 	) -> None:
 		self._encoding = encoding
-		self._base_rdir = base_rdir
+		self._rdir = rdir
 
 
 	def get_animes(
@@ -23,7 +23,7 @@ class ResponseParser:
 	) -> list[tuple[str, int]]:
 		animes = []
 		json_data = self._read_json(
-			file=self._base_rdir / 'search.json',
+			file=self._rdir / 'search.json',
 		)
 		for anime in json_data['response']:
 			animes.append(
@@ -39,7 +39,7 @@ class ResponseParser:
 		self,
 	) -> list[EpisodeData]:
 		json_data = self._read_json(
-			file=self._base_rdir / 'anime.json',
+			file=self._rdir / 'anime.json',
 		)
 		anime_data: list[EpisodeData] = []
 
@@ -47,7 +47,7 @@ class ResponseParser:
 			number = video['number']
 			dubbing = video['data']['dubbing']
 			player = video['data']['player']
-			views = video['views'] # views specific pair player and dubbing
+			views = video['views']
 			player_url = video['iframe_url']
 
 			for ep_data in anime_data:
@@ -93,7 +93,7 @@ class ResponseParser:
 		self,
 	) -> AnimeMetadata:
 		json_data = self._read_json(
-			file=self._base_rdir / 'anime.json',
+			file=self._rdir / 'anime.json',
 		)
 		title = json_data['response']['title']
 		description = json_data['response']['description']

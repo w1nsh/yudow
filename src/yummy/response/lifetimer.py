@@ -10,10 +10,10 @@ TIME_FORMAT = '%Y.%m.%d %H:%M:%S.%f'
 class ResponseLifetimer:
 	def __init__(
 		self,
-		base_rdir: Path,
+		rdir: Path,
 		timestamp_lifetime: int = 30,
 	) -> None:
-		self._base_rdir = base_rdir
+		self._rdir = rdir
 		self._timestamp_lifetime = timestamp_lifetime
 
 
@@ -22,7 +22,7 @@ class ResponseLifetimer:
 		timestamp: ResponseTimestamp,
 	) -> None:
 		f_timestamp = timestamp.timestamp.strftime(TIME_FORMAT)
-		filepath = self._base_rdir / f'{timestamp.filename.value}.txt'
+		filepath = self._rdir / f'{timestamp.filename.value}.txt'
 		filepath.write_text(
 			f_timestamp,
 		)
@@ -32,7 +32,7 @@ class ResponseLifetimer:
 		self,
 		filename: ReponseFilenames,
 	) -> ResponseTimestamp:
-		filepath = self._base_rdir / f'{filename.value}.txt'
+		filepath = self._rdir / f'{filename.value}.txt'
 		file_data = filepath.read_text()
 		timestamp = datetime.datetime.strptime(
 			file_data,
@@ -70,4 +70,4 @@ class ResponseLifetimer:
 		self,
 		filename: ReponseFilenames,
 	) -> bool:
-		return (self._base_rdir / f'{filename.value}.txt').exists()
+		return (self._rdir / f'{filename.value}.txt').exists()

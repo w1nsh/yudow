@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from src.config.templates import TemplatesConfig
-from src.config.play import PlayConfig
 
 @dataclass
 class Config:
@@ -10,4 +9,3 @@ class Config:
 	max_retries: int
 	metadata: bool
 	templates: TemplatesConfig
-	play: PlayConfig

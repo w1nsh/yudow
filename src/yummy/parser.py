@@ -12,10 +12,10 @@ class YummyParser:
 	def __init__(
 		self,
 		encoding: str,
-		base_rdir: Path,
+		rdir: Path,
 	) -> None:
 		self._encoding = encoding
-		self._base_rdir = base_rdir
+		self._rdir = rdir
 
 
 	def write(
@@ -60,7 +60,7 @@ class YummyParser:
 		)
 		self.write(
 			response=response,
-			response_file=self._base_rdir / f"{filename.value}.json",
+			response_file=self._rdir / f"{filename.value}.json",
 		)
 
 
@@ -81,7 +81,7 @@ class YummyParser:
 		)
 		self.write(
 			response=response,
-			response_file=self._base_rdir / f'{filename.value}.json',
+			response_file=self._rdir / f'{filename.value}.json',
 		)
 
 
